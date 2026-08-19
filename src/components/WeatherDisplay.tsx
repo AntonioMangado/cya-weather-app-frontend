@@ -1,12 +1,12 @@
-import type { ForecastDay } from '@/types/weather'
+import type { WeatherResponse } from '@/types/weather'
 import { WeatherBox } from './WeatherBox'
 
 interface WeatherDisplayProps {
-  forecast: ForecastDay[]
+  weather: WeatherResponse
 }
 
-export function WeatherDisplay({ forecast }: WeatherDisplayProps) {
-  const [today, ...upcoming] = forecast
+export function WeatherDisplay({ weather }: WeatherDisplayProps) {
+  const [today, ...upcoming] = weather.forecast
 
   if (!today) {
     return null
@@ -14,7 +14,7 @@ export function WeatherDisplay({ forecast }: WeatherDisplayProps) {
 
   return (
     <div className="weather-results">
-      <WeatherBox day={today} variant="main" />
+      <WeatherBox day={today} variant="main" location={weather.location} />
       <div className="forecast-list">
         {upcoming.map((day) => (
           <WeatherBox key={day.date} day={day} variant="forecast" />

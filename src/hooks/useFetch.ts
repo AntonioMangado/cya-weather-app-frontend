@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { API_BASE_URL } from '@/config/api'
-import type { ForecastDay } from '@/types/weather'
+import type { WeatherResponse } from '@/types/weather'
 
 export interface FetchError {
   status: number
@@ -8,13 +8,13 @@ export interface FetchError {
 }
 
 interface UseFetchResult {
-  data: ForecastDay[] | null
+  data: WeatherResponse | null
   isLoading: boolean
   error: FetchError | null
 }
 
 export function useFetch(city: string): UseFetchResult {
-  const [data, setData] = useState<ForecastDay[] | null>(null)
+  const [data, setData] = useState<WeatherResponse | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<FetchError | null>(null)
 
@@ -49,7 +49,7 @@ export function useFetch(city: string): UseFetchResult {
         }
 
         if (!controller.signal.aborted) {
-          setData(body as ForecastDay[])
+          setData(body as WeatherResponse)
         }
       } catch {
         if (!controller.signal.aborted) {

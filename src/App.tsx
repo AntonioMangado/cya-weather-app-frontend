@@ -16,7 +16,7 @@ function App() {
       <SearchBar value={city} onChange={setCity} />
       {isLoading && <LoadingPlaceholder />}
       {!isLoading && error && <ErrorMessage message={error.message} />}
-      {!isLoading && !error && data && <WeatherDisplay forecast={data} />}
+      {!isLoading && !error && data && <WeatherDisplay weather={data} />}
     </div>
   )
 }

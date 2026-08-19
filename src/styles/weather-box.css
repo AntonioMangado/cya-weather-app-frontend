@@ -25,6 +25,12 @@
   padding: var(--space-lg);
 }
 
+.weather-box__location {
+  margin: 0 0 var(--space-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .weather-box__date {
   margin: 0 0 var(--space-sm);
   font-weight: 700;

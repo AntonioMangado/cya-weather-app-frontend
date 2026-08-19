@@ -1,14 +1,20 @@
-import type { ForecastDay } from '@/types/weather'
+import type { ForecastDay, Location } from '@/types/weather'
 import { formatForecastDate } from '@/utils/date'
 
 interface WeatherBoxProps {
   day: ForecastDay
   variant: 'main' | 'forecast'
+  location?: Location
 }
 
-export function WeatherBox({ day, variant }: WeatherBoxProps) {
+export function WeatherBox({ day, variant, location }: WeatherBoxProps) {
   return (
     <div className={`weather-box weather-box--${variant}`}>
+      {location && (
+        <p className="weather-box__location">
+          {location.city}, {location.countryInitials}
+        </p>
+      )}
       <p className="weather-box__date">{formatForecastDate(day.date)}</p>
       <img
         className="weather-box__icon"

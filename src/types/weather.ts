@@ -5,3 +5,13 @@ export interface ForecastDay {
   conditionText: string
   conditionIcon: string
 }
+
+export interface Location {
+  city: string
+  countryInitials: string
+}
+
+export interface WeatherResponse {
+  location: Location
+  forecast: ForecastDay[]
+}

@@ -76,7 +76,11 @@ describe('App', () => {
     fetchMock.mockResolvedValue({
       ok: true,
       status: 200,
-      json: () => Promise.resolve([]),
+      json: () =>
+        Promise.resolve({
+          location: { city: 'Berlin', countryInitials: 'GE' },
+          forecast: [],
+        }),
     })
     render(<App />)
 
@@ -154,36 +158,39 @@ describe('App', () => {
       ok: true,
       status: 200,
       json: () =>
-        Promise.resolve([
-          {
-            date: '2026-08-19',
-            maxTempC: 30,
-            minTempC: 18,
-            conditionText: 'Sunny',
-            conditionIcon: '//cdn/sunny.png',
-          },
-          {
-            date: '2026-08-20',
-            maxTempC: 28,
-            minTempC: 17,
-            conditionText: 'Cloudy',
-            conditionIcon: '//cdn/cloudy.png',
-          },
-          {
-            date: '2026-08-21',
-            maxTempC: 26,
-            minTempC: 16,
-            conditionText: 'Rainy',
-            conditionIcon: '//cdn/rainy.png',
-          },
-          {
-            date: '2026-08-22',
-            maxTempC: 27,
-            minTempC: 16,
-            conditionText: 'Windy',
-            conditionIcon: '//cdn/windy.png',
-          },
-        ]),
+        Promise.resolve({
+          location: { city: 'Madrid', countryInitials: 'SP' },
+          forecast: [
+            {
+              date: '2026-08-19',
+              maxTempC: 30,
+              minTempC: 18,
+              conditionText: 'Sunny',
+              conditionIcon: '//cdn/sunny.png',
+            },
+            {
+              date: '2026-08-20',
+              maxTempC: 28,
+              minTempC: 17,
+              conditionText: 'Cloudy',
+              conditionIcon: '//cdn/cloudy.png',
+            },
+            {
+              date: '2026-08-21',
+              maxTempC: 26,
+              minTempC: 16,
+              conditionText: 'Rainy',
+              conditionIcon: '//cdn/rainy.png',
+            },
+            {
+              date: '2026-08-22',
+              maxTempC: 27,
+              minTempC: 16,
+              conditionText: 'Windy',
+              conditionIcon: '//cdn/windy.png',
+            },
+          ],
+        }),
     })
     render(<App />)
 
@@ -191,6 +198,7 @@ describe('App', () => {
       await vi.advanceTimersByTimeAsync(1000)
     })
 
+    expect(screen.getByText('Madrid, SP')).toBeInTheDocument()
     expect(screen.getByRole('img', { name: 'Sunny' })).toBeInTheDocument()
     expect(screen.getByRole('img', { name: 'Cloudy' })).toBeInTheDocument()
     expect(screen.getByRole('img', { name: 'Rainy' })).toBeInTheDocument()

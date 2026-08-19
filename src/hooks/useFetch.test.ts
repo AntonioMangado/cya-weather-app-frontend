@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useFetch } from './useFetch'
-import type { ForecastDay } from '@/types/weather'
+import type { WeatherResponse } from '@/types/weather'
 
 describe('useFetch', () => {
   let fetchMock: ReturnType<typeof vi.fn>
@@ -25,26 +25,29 @@ describe('useFetch', () => {
     expect(result.current.error).toBeNull()
   })
 
-  it('exposes the forecast data on a successful request', async () => {
-    const forecast: ForecastDay[] = [
-      {
-        date: '2026-08-19',
-        maxTempC: 30,
-        minTempC: 18,
-        conditionText: 'Sunny',
-        conditionIcon: '//cdn/sunny.png',
-      },
-    ]
+  it('exposes the weather data on a successful request', async () => {
+    const weather: WeatherResponse = {
+      location: { city: 'Madrid', countryInitials: 'SP' },
+      forecast: [
+        {
+          date: '2026-08-19',
+          maxTempC: 30,
+          minTempC: 18,
+          conditionText: 'Sunny',
+          conditionIcon: '//cdn/sunny.png',
+        },
+      ],
+    }
     fetchMock.mockResolvedValue({
       ok: true,
       status: 200,
-      json: () => Promise.resolve(forecast),
+      json: () => Promise.resolve(weather),
     })
 
     const { result } = renderHook(() => useFetch('Madrid'))
 
     await waitFor(() => expect(result.current.isLoading).toBe(false))
-    expect(result.current.data).toEqual(forecast)
+    expect(result.current.data).toEqual(weather)
     expect(result.current.error).toBeNull()
   })
 
