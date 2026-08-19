@@ -79,4 +79,63 @@ describe('App', () => {
 
     expect(screen.queryByRole('status')).not.toBeInTheDocument()
   })
+
+  it('shows a distinct message when the city is not found', async () => {
+    fetchMock.mockResolvedValue({
+      ok: false,
+      status: 404,
+      json: () =>
+        Promise.resolve({
+          message: 'No weather data found for "Nowhereland"',
+        }),
+    })
+    render(<App />)
+
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'Nowhereland' },
+    })
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1000)
+    })
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'No weather data found for "Nowhereland"',
+    )
+  })
+
+  it('shows a distinct message for a generic failure', async () => {
+    fetchMock.mockResolvedValue({
+      ok: false,
+      status: 503,
+      json: () =>
+        Promise.resolve({
+          message: "Couldn't process the weather request, try again later",
+        }),
+    })
+    render(<App />)
+
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'Berlin' },
+    })
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1000)
+    })
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      "Couldn't process the weather request, try again later",
+    )
+  })
+
+  it('does not show the error message while the request is still loading', () => {
+    render(<App />)
+
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'Berlin' },
+    })
+    act(() => {
+      vi.advanceTimersByTime(1000)
+    })
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
 })
