@@ -7,7 +7,7 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { useFetch } from '@/hooks/useFetch'
 
 function App() {
-  const [city, setCity] = useState('')
+  const [city, setCity] = useState('Madrid')
   const debouncedCity = useDebounce(city)
   const { data, isLoading, error } = useFetch(debouncedCity)
 

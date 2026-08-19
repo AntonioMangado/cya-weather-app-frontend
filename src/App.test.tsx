@@ -16,12 +16,22 @@ describe('App', () => {
     vi.unstubAllGlobals()
   })
 
-  it('renders the search bar', () => {
+  it('renders the search bar pre-filled with Madrid', () => {
     render(<App />)
-    expect(screen.getByRole('textbox', { name: /city search/i })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: /city search/i })).toHaveValue(
+      'Madrid',
+    )
   })
 
-  it('does not fetch before the debounce delay elapses', () => {
+  it('fetches Madrid immediately on first render, with no debounce delay', () => {
+    render(<App />)
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    const url = fetchMock.mock.calls[0][0] as URL
+    expect(url.searchParams.get('city')).toBe('Madrid')
+  })
+
+  it('does not fetch a newly typed city before the debounce delay elapses', () => {
     render(<App />)
 
     fireEvent.change(screen.getByRole('textbox'), {
@@ -31,7 +41,7 @@ describe('App', () => {
       vi.advanceTimersByTime(999)
     })
 
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 
   it('fetches the typed city 1 second after the user stops typing', () => {
@@ -44,8 +54,8 @@ describe('App', () => {
       vi.advanceTimersByTime(1000)
     })
 
-    expect(fetchMock).toHaveBeenCalledTimes(1)
-    const url = fetchMock.mock.calls[0][0] as URL
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    const url = fetchMock.mock.calls[1][0] as URL
     expect(url.searchParams.get('city')).toBe('Berlin')
   })
 
@@ -177,9 +187,6 @@ describe('App', () => {
     })
     render(<App />)
 
-    fireEvent.change(screen.getByRole('textbox'), {
-      target: { value: 'Madrid' },
-    })
     await act(async () => {
       await vi.advanceTimersByTimeAsync(1000)
     })
