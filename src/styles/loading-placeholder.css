@@ -1,0 +1,15 @@
+.spinner {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 auto var(--space-md);
+  border: var(--border-width) solid var(--color-navy);
+  border-radius: 0;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -12,7 +12,7 @@ function App() {
   const { data, isLoading, error } = useFetch(debouncedCity)
 
   return (
-    <div>
+    <div className="app">
       <SearchBar value={city} onChange={setCity} />
       {isLoading && <LoadingPlaceholder />}
       {!isLoading && error && <ErrorMessage message={error.message} />}

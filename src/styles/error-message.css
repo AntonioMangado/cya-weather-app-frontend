@@ -1,0 +1,12 @@
+.error-message {
+  width: 100%;
+  padding: var(--space-md);
+  background-color: var(--color-cream);
+  color: var(--color-navy);
+  border: var(--border-width) solid var(--color-navy);
+  border-radius: 0;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-navy);
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}

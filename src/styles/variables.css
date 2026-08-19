@@ -1,0 +1,13 @@
+:root {
+  --color-cream: #f3ecda;
+  --color-navy: #14213d;
+
+  --border-width: 3px;
+  --shadow-offset: 6px;
+
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+
+  --font-family: system-ui, 'Segoe UI', Arial, sans-serif;
+}
