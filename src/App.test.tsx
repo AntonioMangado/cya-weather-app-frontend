@@ -59,6 +59,44 @@ describe('App', () => {
     expect(url.searchParams.get('city')).toBe('Berlin')
   })
 
+  it('fetches immediately on submit, without waiting for the debounce delay', () => {
+    render(<App />)
+
+    const textbox = screen.getByRole('textbox')
+    fireEvent.change(textbox, { target: { value: 'Berlin' } })
+    fireEvent.submit(textbox.closest('form')!)
+    act(() => {
+      vi.advanceTimersByTime(0)
+    })
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    const url = fetchMock.mock.calls[1][0] as URL
+    expect(url.searchParams.get('city')).toBe('Berlin')
+  })
+
+  it('goes back to debouncing after a submit once the user types again', () => {
+    render(<App />)
+
+    const textbox = screen.getByRole('textbox')
+    fireEvent.change(textbox, { target: { value: 'Berlin' } })
+    fireEvent.submit(textbox.closest('form')!)
+    act(() => {
+      vi.advanceTimersByTime(0)
+    })
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+
+    fireEvent.change(textbox, { target: { value: 'Berlin, Germany' } })
+    act(() => {
+      vi.advanceTimersByTime(999)
+    })
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+
+    act(() => {
+      vi.advanceTimersByTime(1)
+    })
+    expect(fetchMock).toHaveBeenCalledTimes(3)
+  })
+
   it('shows the loading placeholder while the request is in flight', () => {
     render(<App />)
 
