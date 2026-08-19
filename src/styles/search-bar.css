@@ -16,6 +16,5 @@
 }
 
 .search-bar:focus {
-  outline: var(--border-width) solid var(--color-navy);
-  outline-offset: 2px;
+  outline: none;
 }
