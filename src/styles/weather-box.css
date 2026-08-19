@@ -11,6 +11,12 @@
   gap: var(--space-md);
 }
 
+@media (max-width: 480px) {
+  .forecast-list {
+    grid-template-columns: 1fr;
+  }
+}
+
 .weather-box {
   background-color: var(--color-cream);
   color: var(--color-navy);
