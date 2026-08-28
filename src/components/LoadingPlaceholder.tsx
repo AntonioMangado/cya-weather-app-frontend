@@ -11,7 +11,6 @@ export function LoadingPlaceholder() {
       <div className="forecast-list">
         <div className="weather-box weather-box--forecast weather-box--placeholder" />
         <div className="weather-box weather-box--forecast weather-box--placeholder" />
-        <div className="weather-box weather-box--forecast weather-box--placeholder" />
       </div>
     </div>
   )
